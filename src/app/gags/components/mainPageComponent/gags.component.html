@@ -1,0 +1,122 @@
+<div *ngIf="loading">
+    gfgfgg
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50"
+      strokeWidth="5"
+    ></mat-progress-spinner>
+  </div> 
+
+    
+<div *ngIf="errorMsg!==null">
+    <div class="col-sm-6 offset-sm-3" id="errorMessage">
+        <span > {{errorMsg}} </span>
+    </div> 
+</div>
+<!--when the loading of jokes is finished and there is no error, we display the jokes-->
+<!-- flaaag -->
+
+
+
+<div *ngIf="loading===false && errorMsg===null">
+    <div class="sh-section__wrap row sh-section__isotope-init" id="conteneur">
+        <div id="gagList">
+            <div id="gagBloc" *ngFor="let gag of gags;  let i=index">                  
+                <div class="gagPost" id=g{{i}}>
+                    <div class="section__head">
+                        <a href="single_post.html" class="imageUser">
+                            <div>
+                                <img  src="assets/images/users/userClassic.png" alt="">
+                            </div>                             
+                        </a>
+                        <div  class="detail_header">
+                            <div  class="section_username">
+                                <a href="#" *ngIf="gag.createur_name===null">
+                                    @Anonyme
+                                </a>
+                                <a href="#" *ngIf="gag.createur_name!==null">
+                                    @{{gag.createur_name}}
+                                </a>           
+                            </div>
+                            <div class="section_hours">AAAAA</div>
+                        </div>
+                    </div>
+                    <div class="mainGagContainer">
+                        <div id="title" *ngIf="gag.titreGag!==''">
+                            <a href="{{'/gags/' + gag.createur_name + '/' + gag.id}}">
+                                <h5>{{gag.titreGag}}</h5>
+                            </a>
+                        </div>
+                        <div id="title" *ngIf="gag.titreGag===''">
+                            <a href="{{'/gags/' + gag.createur_name + '/' + gag.id}}"><h5>NoTitle</h5></a>
+                        </div>
+                        <div class="section_content">
+                            <p *ngIf="isArabic(gag.titreGag)===true" style="text-align : right;" [innerHTML]="gag.gagText" class="gag"></p>
+                            <p *ngIf="isArabic(gag.titreGag)===false" [innerHTML]="gag.gagText" class="gag"></p>
+                            <div *ngIf="gag.laChute!==''">
+                                <button id="laChute" href="#" class="btn btn-default" (click)="updateShowLachute(gag.id,true)">
+                                    <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                                </button>
+                                <div *ngIf="currentShowLaChute===true  && currentGagShowLaChute==gag.id">
+                                    <div  *ngIf="isArabic(gag.titreGag)===true" style="text-align : right;"  [innerHTML]="gag.laChute" class="laChuteContainer" id="{{'chuteGag' + gag.id}}">   </div>          
+                                    <div  *ngIf="isArabic(gag.titreGag)===false" [innerHTML]="gag.laChute" class="laChuteContainer" id="{{'chuteGag' + gag.id}}">   </div>                                                                                        
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+
+                    
+                    <div class="section_footer">
+                        <div id=interaction> 
+                            <div *ngIf="isGagAlreadyLiked(gag)===1" class="footerIcons">
+                                <button id="like" href="#" class="btn btn-default" disabled>
+                                    <i class="fa fa-thumbs-up icon"></i>
+                                </button>
+                                <button  href="#" class="btn btn-default">
+                                    <i class="fa fa-thumbs-down icon"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="isGagAlreadyLiked(gag)===-1" class="footerIcons">
+                                <button  href="#" class="btn btn-default">
+                                    <i class="fa fa-thumbs-up icon"></i>
+                                </button>
+                                <button id="dislike" href="#" class="btn btn-default" disabled>
+                                    <i class="fa fa-thumbs-down icon"></i>
+                                </button>
+                            </div>
+
+                            <div *ngIf="isGagAlreadyLiked(gag)===0" class="footerIcons">
+                                <button  href="#" class="btn btn-default">
+                                    <i class="fa fa-thumbs-up icon"></i>
+                                </button>
+                                <button  href="#" class="btn btn-default">
+                                    <i class="fa fa-thumbs-down icon"></i>
+                                </button>
+                            </div>
+                            <button id="comment" class="footerIcons" href="#" class="btn btn-default">
+                                <i class="fa fa-comment-alt" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                                        
+                </div>                        
+            </div>
+        </div> 
+
+
+        <!-- Load More Button -->
+        <div *ngIf="!loading && currentPage < totalPages - 1">
+            <button id="buttonMoreJokes" class="btn btn-default" (click)="loadMore()">Load More</button>
+        </div>
+    </div>
+
+
+    <!--display notification msg if joke is created-->
+    <!--div *ngIf="isJokeRecentlyUpdated!==null" id=jokeAdded>
+        <div class="alert alert-success alert-dismissible fade show">
+            {{this.isJokeRecentlyUpdated}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div-->

@@ -1,0 +1,98 @@
+<div id="addTextJoke">
+    <h3>Ajouter votre blague !</h3>
+    <br><br>
+    <form [formGroup]="addTextGagForm" (ngSubmit)="onClickSendText()" novalidate>
+      <fieldset>
+        <!-- Titre -->
+        <div class="form-group">
+          <label>Entrez le titre de votre blague (facultatif)</label>
+          <input type="text" class="form-control" formControlName="titre" id="nom" autocomplete="off">
+        </div>
+        <div *ngIf="addTextGagForm.controls['titre'].invalid && (addTextGagForm.controls['titre'].dirty || addTextGagForm.controls['titre'].touched)" class="alert alert-danger">
+          <div *ngIf="addTextGagForm.controls['titre'].errors?.['maxlength']">
+            Longueur du titre dépassée (80 caractères)
+          </div>
+        </div>
+  
+        <!-- Blague Contenu -->
+        <div class="form-group">
+          <label>Racontez votre blague (*)</label>
+          <textarea class="form-control" formControlName="gagContenu" rows="5" autocomplete="off"></textarea>
+        </div>
+        <div *ngIf="addTextGagForm.controls['gagContenu'].invalid && (addTextGagForm.controls['gagContenu'].dirty || addTextGagForm.controls['gagContenu'].touched)" class="alert alert-danger">
+          <div *ngIf="addTextGagForm.controls['gagContenu'].errors?.['minlength']">
+            Longueur minimale: 10 caractères
+          </div>
+          <div *ngIf="addTextGagForm.controls['gagContenu'].errors?.['maxlength']">
+            Longueur maximale: 1000 caractères
+          </div>
+          <div *ngIf="addTextGagForm.controls['gagContenu'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+  
+        <!-- La Chute -->
+        <div class="form-group">
+          <label>La chute (facultatif)</label>
+          <textarea class="form-control" formControlName="laChute" rows="2" autocomplete="off"></textarea>
+        </div>
+        <div *ngIf="addTextGagForm.controls['laChute'].invalid && (addTextGagForm.controls['laChute'].dirty || addTextGagForm.controls['laChute'].touched)" class="alert alert-danger">
+          <div *ngIf="addTextGagForm.controls['laChute'].errors?.['maxlength']">
+            Longueur maximale: 400 caractères
+          </div>
+        </div>
+  
+        <!-- Culture Selection -->
+        <div class="form-group">
+          <label for="culture">Sélectionnez la culture (*)</label>
+          <select id="culture" class="form-control" formControlName="culture">
+            <option value="" disabled>Sélectionnez une culture</option>
+            <option *ngFor="let culture of cultures" [value]="culture">{{ culture }}</option>
+          </select>
+        </div>
+        <div *ngIf="addTextGagForm.controls['culture'].invalid && (addTextGagForm.controls['culture'].dirty || addTextGagForm.controls['culture'].touched)" class="alert alert-danger">
+          <div *ngIf="addTextGagForm.controls['culture'].errors?.['required']">
+            La culture est obligatoire
+          </div>
+        </div>
+  
+        <!-- Categorie Selection -->
+        <div class="form-group">
+          <label for="categorie">Sélectionnez le type (*)</label>
+          <select id="categorie" class="form-control" formControlName="type">
+            <option value="" disabled>Sélectionnez un type</option>
+            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div *ngIf="addTextGagForm.controls['type'].invalid && (addTextGagForm.controls['type'].dirty || addTextGagForm.controls['type'].touched)" class="alert alert-danger">
+          <div *ngIf="addTextGagForm.controls['type'].errors?.['required']">
+            La catégorie est obligatoire
+          </div>
+        </div>
+  
+        <!-- Type Selection -->
+        <div class="form-group">
+          <label>Sélectionnez la catégorie de blague (*)</label>
+          <div class="button-group">
+            <div *ngFor="let category of categories" class="hashtag-button">
+              <button type="button"
+                      [class.selected]="addTextGagForm.value.selectedCategory === category"
+                      (click)="selectCategory(category)">
+                {{ category }}
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Error message -->
+        <div *ngIf="errorCreation" class="alert alert-danger">
+          {{ errorCreation }}
+        </div>
+  
+        <!-- Submit Button -->
+        <button class="btn btn-success" id="envoyer" type="submit" [disabled]="addTextGagForm.invalid">
+          <i class="fa fa-upload" aria-hidden="true"></i> Enregistrer
+        </button>
+      </fieldset>
+    </form>
+  </div>

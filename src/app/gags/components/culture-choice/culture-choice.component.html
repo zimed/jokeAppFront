@@ -1,0 +1,12 @@
+<!-- culture-popup.component.html -->
+ fgfgggggggggggggggg
+<div class="culture-popup-overlay" *ngIf="showPopup">
+    <div class="culture-popup">
+      <h2>Select Your Culture</h2>
+      <div class="culture-options">
+        <button *ngFor="let culture of cultures" (click)="selectCulture(culture)">
+          {{ culture }}
+        </button>
+      </div>
+    </div>
+  </div>

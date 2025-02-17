@@ -1,0 +1,57 @@
+<div class="sidebar">
+    <!-- Filter Button -->
+    <button class="filter-toggle-button" (click)="navigateToAddGag()">
+      Ajouter une blague
+    </button>
+    <button class="filter-toggle-button">
+      Themes
+    </button>
+    <button class="filter-toggle-button" (click)="toggleFilters()">
+      {{ isFiltersVisible ? 'Masquer les filtres' : 'Filtres' }}
+    </button>
+  
+    <!-- Filter Details (Hidden by Default) -->
+    <div *ngIf="isFiltersVisible" class="filter-details" [class.open]="isFiltersVisible">
+      <!-- Culture Filter -->
+      <div class="filter-group">
+        <h4 class="filter-title">Culture</h4>
+        <div class="button-group">
+          <button *ngFor="let culture of cultures"
+                  type="button"
+                  [class.selected]="selectedCulture === culture"
+                  (click)="selectCulture(culture)">
+            {{ culture }}
+          </button>
+        </div>
+      </div>
+    
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <h4 class="filter-title">Category</h4>
+        <div class="button-group">
+          <button *ngFor="let category of categories"
+                  type="button"
+                  [class.selected]="selectedCategory === category"
+                  (click)="selectCategory(category)">
+            {{ category }}
+          </button>
+        </div>
+      </div>
+    
+      <!-- Type Filter -->
+      <div class="filter-group">
+        <h4 class="filter-title">Type</h4>
+        <div class="button-group">
+          <button *ngFor="let type of types"
+                  type="button"
+                  [class.selected]="selectedType === type"
+                  (click)="selectType(type)">
+            {{ type }}
+          </button>
+        </div>
+      </div>
+    
+      <!-- Apply Filters Button -->
+      <button class="apply-button" (click)="applyFilters()">Apply Filters</button>
+    </div>
+  </div>
