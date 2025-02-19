@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
@@ -12,7 +12,9 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/auth'; // Base URL for authentication endpoints
   private tokenKey = 'authToken'; // Key for storing the JWT token in localStorage
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private activateRoute: ActivatedRoute, private http: HttpClient) {
+    this.isLoggedInSubject.next(this.isLoggedIn());
+  }
 
   // Login method
   login(username: string, password: string): Observable<any> {
@@ -21,15 +23,21 @@ export class AuthService {
       'Content-Type': 'application/json',
     });
 
-    // Set responseType to 'text' to handle plain text responses
     return this.http.post(`${this.apiUrl}/login`, payload, { headers, responseType: 'text' }).pipe(
-      tap((response: string) => {
-        // Store the JWT token in localStorage
-        if (response) {
-          localStorage.setItem(this.tokenKey, response);
-          localStorage.setItem('username', username);
-          this.isLoggedInSubject.next(true); // Update login status
-        }
+      tap({
+        next: (response: string) => {
+          if (response) {
+            localStorage.setItem(this.tokenKey, response);
+            localStorage.setItem('username', username);
+            this.isLoggedInSubject.next(true); // Update login status
+            const returnUrl = this.activateRoute.snapshot.queryParams['returnUrl'] || '/jokes';
+            this.router.navigateByUrl(returnUrl);
+          }
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          // Optionally, show a user-friendly error message
+        },
       })
     );
   }
@@ -41,12 +49,22 @@ export class AuthService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.post(`${this.apiUrl}/register`, payload, { headers, responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/register`, payload, { headers, responseType: 'text' }).pipe(
+      tap({
+        error: (err) => {
+          console.error('Registration failed:', err);
+          // Optionally, show a user-friendly error message
+        },
+      })
+    );
   }
 
   // Check if the user is logged in
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.tokenKey); // Check if token exists in localStorage
+    const token = localStorage.getItem(this.tokenKey);
+    console.log("token : ", token);
+    console.log("islogiedintest : ", !!token && !this.isTokenExpired(token));
+    return !!token && !this.isTokenExpired(token); // Check if token exists and is not expired
   }
 
   // Get the connected username
@@ -56,7 +74,12 @@ export class AuthService {
 
   // Get the JWT token
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    const token = localStorage.getItem(this.tokenKey);
+    if (token && this.isTokenExpired(token)) {
+      this.logout();
+      return null;
+    }
+    return token;
   }
 
   // Logout method
@@ -64,6 +87,12 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey); // Remove the token
     localStorage.removeItem('username'); // Remove the username
     this.isLoggedInSubject.next(false); // Update login status
-    this.router.navigate(['/login']); // Redirect to login page
+    this.router.navigate(['/jokes']); // Redirect to login page
+  }
+
+  // Check if the token is expired
+  private isTokenExpired(token: string): boolean {
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
+    return payload.exp < Date.now() / 1000; // Check if the token is expired
   }
 }

@@ -1,30 +1,40 @@
+// culture-choice.component.ts
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button'; // Import MatButtonModule
+import { CultureService } from '../../services/CultureService'; // Import the CultureService  
 
 @Component({
   selector: 'app-culture-choice',
   templateUrl: './culture-choice.component.html',
   standalone: true,
-  styleUrls: ['./culture-choice.component.scss']
+  styleUrls: ['./culture-choice.component.scss'],
+  imports: [CommonModule, FormsModule, MatRadioModule, MatButtonModule], // Import modules correctly
 })
 export class CultureChoiceComponent implements OnInit {
-  showPopup: boolean = false;
-  cultures: string[] = ['MAROCAINE', 'FRANÇAISE', 'International']; // Example cultures
-  selectedCulture: string | null = null;
+  cultures = [
+    { code: 'MAR', name: 'Marocaine' },
+    { code: 'FR', name: 'Française' },
+  ];
+  selectedCulture: string = '';
 
-  constructor() {}
+  constructor(public dialogRef: MatDialogRef<CultureChoiceComponent>, private cultureService: CultureService) {}
 
   ngOnInit(): void {
-    // Check if a culture is already selected
-    this.selectedCulture = localStorage.getItem('selectedCulture');
-    if (!this.selectedCulture) {
-      this.showPopup = true; // Show popup if no culture is selected
-    }
+    this.selectedCulture = localStorage.getItem('selectedCulture') || '';
   }
 
-  // Handle culture selection
-  selectCulture(culture: string): void {
-    this.selectedCulture = culture;
-    localStorage.setItem('selectedCulture', culture); // Store the selected culture
-    this.showPopup = false; // Hide the popup
+  // Save the selected culture and close the modal
+  saveCulture(): void {
+    this.cultureService.setCulture(this.selectedCulture); 
+    this.dialogRef.close(this.selectedCulture);
+  }
+
+  // Close the modal without saving
+  closeModal(): void {
+    this.dialogRef.close();
   }
 }

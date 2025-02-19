@@ -22,7 +22,9 @@ import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { AuthentificationComponent } from './authentification/authentification.component';
 import { CultureChoiceComponent } from './gags/components/culture-choice/culture-choice.component';
-import { AddGagComponentComponent } from './gags/components/addGagComponent/add-gag-component.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio'; // Import this module
+
 
 
 
@@ -32,8 +34,7 @@ import { AddGagComponentComponent } from './gags/components/addGagComponent/add-
   declarations: [
     AppComponent,
     SpinnerComponent,
-    AuthentificationComponent
-    
+    AuthentificationComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +48,9 @@ import { AddGagComponentComponent } from './gags/components/addGagComponent/add-
     FullComponent,
     NavigationComponent,
     SidebarComponent,
-    CultureChoiceComponent,
+
+    MatRadioModule,
+    MatDialogModule
   ],
   providers: [
     {

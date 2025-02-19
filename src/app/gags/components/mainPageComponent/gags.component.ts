@@ -3,7 +3,8 @@ import { Gag } from '../../../shared/models/gags.interface';
 import { GagService } from '../../services/GagService';
 import { environment } from '../../../../environments/environment';
 import { FilterService } from '../../services/FilterService';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest} from 'rxjs';
+import { CultureService } from '../../services/CultureService';
 
 @Component({
   templateUrl: './gags.component.html',
@@ -18,20 +19,32 @@ export class GagComponent implements OnInit {
   currentGagShowLaChute: number | null = null;
   currentPage: number = 0;
   totalPages: number = 0;
+  currentCulture: string = 'MAR';
+  public userImageSrc: string = 'assets/images/users/user_francais.png';
   private filtersSubscription: Subscription = new Subscription();
 
-  constructor(private gagService: GagService, private filterService: FilterService) {
+  constructor(private gagService: GagService, private filterService: FilterService, private cultureService: CultureService) {
   }
 
   ngOnInit() {
     this.loading = true;
-    //this.loadGags();
-    this.filtersSubscription = this.filterService.filters$.subscribe(filters => {
-      this.currentPage = 0; // Reset to the first page when filters change
-      this.gags = []; // Clear existing gags
-      this.loadGags(filters);
-      
-    });    
+
+    this.filtersSubscription = combineLatest([
+      this.cultureService.culture$,
+      this.filterService.filters$
+    ]).subscribe(([culture, filters]) => {
+      this.currentCulture = culture;
+      console.log('Current culture:', this.currentCulture);
+      this.userImageSrc = this.cultureService.getProfilImage();
+  
+      // Ajouter la culture aux filtres et recharger les blagues
+      const updatedFilters = { ...filters, culture: this.currentCulture };
+      this.currentPage = 0; // Reset de la pagination
+      this.gags = []; // Nettoyer la liste actuelle
+      this.loadGags(updatedFilters);
+    });
+    
+    
   }
 
   ngOnDestroy() {

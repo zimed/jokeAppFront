@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { GagService } from '../../services/GagService';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-gag-component',
@@ -10,11 +11,11 @@ import { GagService } from '../../services/GagService';
 export class AddGagComponentComponent implements OnInit {
   addTextGagForm!: FormGroup;
   errorCreation: string | null = null;
-  cultures = ['MAROCAINE', 'FRANÇAISE', 'International'];
+  cultures = ['MAROCAINE', 'FRANÇAISE'];
   types = ['Devinette', 'Blague'];
   categories = ['IRONIE', 'SARCASME', 'HUMOUR NOIR'];
 
-  constructor(private formBuilder: FormBuilder, private gagService: GagService) {}
+  constructor(private formBuilder: FormBuilder, private gagService: GagService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.addTextGagForm = this.formBuilder.group({
@@ -46,8 +47,7 @@ export class AddGagComponentComponent implements OnInit {
   private buildPayload(): any {
     const cultureMapping: { [key: string]: string } = {
       'MAROCAINE': 'MAR',
-      'FRANÇAISE': 'FR',
-      'International': 'INTERNATIONAL'
+      'FRANÇAISE': 'FR'
     };
 
     const categorieMapping: { [key: string]: string } = {
@@ -77,10 +77,12 @@ export class AddGagComponentComponent implements OnInit {
     this.gagService.addGag(payload).subscribe({
       next: (response) => {
         console.log('Joke added successfully:', response);
+        this.toastr.success('Joke added successfully!');
       },
       error: (error) => {
         console.error('Error adding joke:', error);
         this.errorCreation = 'Une erreur est survenue lors de l\'ajout de la blague.';
+        this.toastr.error('Failed to add joke!', 'Error');
       }
     });
   }

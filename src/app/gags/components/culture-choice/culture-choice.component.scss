@@ -1,34 +1,106 @@
-.culture-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+/* culture-choice.component.scss */
+.modal-container {
+    padding: 24px;
+    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    min-width: 400px;
+    max-width: 600px;
+    width: 90%; /* Make the modal responsive */
+    margin: auto;
+    position: relative;
+  }
+  
+  .modal-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    z-index: 1000;
+    margin-bottom: 24px;
   }
   
-  .culture-popup {
-    background-color: red;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  h2 {
+    color: #2c3e50; /* Dark grey for text */
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
   }
   
-  .culture-options button {
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: red;
-    border: none;
-    border-radius: 4px;
+  .close-icon {
+    size: 3.5rem;
+    color: #95a5a6; /* Light grey for the close icon */
     cursor: pointer;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+  
+    &:hover {
+      color: #e74c3c; /* Red on hover for better feedback */
+    }
   }
   
-  .culture-options button:hover {
-    background-color: #2980b9;
+  .culture-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Add spacing between radio buttons */
+  }
+  
+  .culture-radio-button {
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Light grey background for radio buttons */
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #f1f1f1; /* Slightly darker grey on hover */
+    }
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: center; /* Center the Save button */
+    gap: 12px; /* Add spacing between buttons */
+    margin-top: 24px;
+  }
+  
+  .save-button {
+    background-color: #3e5569; /* Light blue for the save button */
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+  }
+  
+  .save-button:disabled {
+    background-color: #bdc3c7; /* Grey when disabled */
+    cursor: not-allowed;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .modal-container {
+      padding: 16px;
+      border-radius: 8px;
+      min-width: 250px;
+      max-width: 350px;
+    }
+  
+    h2 {
+      font-size: 1.25rem;
+    }
+  
+    .close-icon {
+      font-size: 1.25rem;
+    }
+  
+    .culture-radio-button {
+      padding: 10px;
+    }
+  
+    .save-button {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+    }
   }

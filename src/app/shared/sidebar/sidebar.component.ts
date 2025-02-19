@@ -59,12 +59,7 @@ export class SidebarComponent {
   // Apply filters
   applyFilters(): void {
     this.router.navigate(['/jokes']);
-    const cultureMapping: { [key: string]: string } = {
-      'MAROCAINE': 'MAR',
-      'FRANÇAISE': 'FR',
-      'International': 'INTERNATIONAL'
-    };
-  
+
     const categorieMapping: { [key: string]: string } = {
       'IRONIE': 'IRONIE',
       'SARCASME': 'SARCASM',
@@ -77,19 +72,18 @@ export class SidebarComponent {
     };
   
     // Map the selected values to their corresponding mapped values
-    const mappedCulture = this.selectedCulture ? cultureMapping[this.selectedCulture] : null;
+
     const mappedCategory = this.selectedCategory ? categorieMapping[this.selectedCategory] : null;
     const mappedType = this.selectedType ? typeMapping[this.selectedType] : null;
   
     console.log('Selected Filters:', {
-      culture: mappedCulture,
       category: mappedCategory,
       type: mappedType
     });
     
     // Update the filters in the shared service
     this.filterService.updateFilters({
-      culture: mappedCulture,
+      culture: localStorage.getItem('selectedCulture'),
       category: mappedCategory,
       type: mappedType
     });

@@ -19,14 +19,16 @@
   <li class="nav-item" ngbDropdown placement="bottom-end">
     <a ngbDropdownToggle class="nav-link waves-effect waves-dark pro-pic" href="javascript:void(0)"
       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <img src="assets/images/users/image.png" alt="user" class="rounded-circle" width="31" *ngIf="!isLoggedIn"/>
-      <img src="assets/images/users/userClassic.png" alt="user" class="rounded-circle" width="31" *ngIf="isLoggedIn"/>
+      <img src="assets/images/users/anonyme.png" class="rounded-circle" width="31" *ngIf="!isLoggedIn"/>
       <span class="ms-2">{{connectedUsername}}</span>
     </a>
     <div class="dropdown-menu-right" ngbDropdownMenu>
+      <div class="d-flex justify-content-center align-items-center" *ngIf="isLoggedIn">
+        <img [src]="userImageSrc" alt="user" class="rounded-circle" width="60"/>
+      </div>
       <a class="dropdown-item" href="javascript:void(0)" *ngIf="!isLoggedIn" (click)='authentificate()'> Se Connecter</a>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="javascript:void(0)"> Account Setting</a>
+      <a class="dropdown-item" href="javascript:void(0)" (click)='changeCulture()'>Changer de culture</a>
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="javascript:void(0)" *ngIf="isLoggedIn" (click)='logout()'> Se deconnecter</a>
     </div>

@@ -12,19 +12,6 @@
   
     <!-- Filter Details (Hidden by Default) -->
     <div *ngIf="isFiltersVisible" class="filter-details" [class.open]="isFiltersVisible">
-      <!-- Culture Filter -->
-      <div class="filter-group">
-        <h4 class="filter-title">Culture</h4>
-        <div class="button-group">
-          <button *ngFor="let culture of cultures"
-                  type="button"
-                  [class.selected]="selectedCulture === culture"
-                  (click)="selectCulture(culture)">
-            {{ culture }}
-          </button>
-        </div>
-      </div>
-    
       <!-- Category Filter -->
       <div class="filter-group">
         <h4 class="filter-title">Category</h4>

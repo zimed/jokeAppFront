@@ -37,7 +37,7 @@ mat-progress-spinner {
 /*    begin : bloc head post    */
 .section__head {
     position : absolute;
-    background-color: #31b6be !important;
+    background-color: #C3C302 !important;
     height: 80px;
     width :100%;
     padding: 10px;    
@@ -141,7 +141,7 @@ h5 {
     padding: 1%;
     width: 60px;
     cursor: pointer;
-    background: #494a4d;
+    background: #CCCC00    ;
     color: #fff;
     margin-left :47%;
     margin-bottom: 10px;

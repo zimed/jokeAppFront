@@ -6,6 +6,9 @@ import { AddGagComponentComponent } from "./addGagComponent/add-gag-component.co
 import { GagComponent } from "./mainPageComponent/gags.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CultureChoiceComponent } from './culture-choice/culture-choice.component'; 
+import { AuthGuard } from '../../authentification/auth.guard';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   {
@@ -23,6 +26,7 @@ const routes: Routes = [
       urls: [{ title: "add", url: "/add" }, { title: "add" }],
     },
     component: AddGagComponentComponent,
+    canActivate: [AuthGuard] 
   }
 ];
 
@@ -33,6 +37,11 @@ const routes: Routes = [
     CommonModule,
     MatProgressSpinnerModule,
     RouterModule.forChild(routes),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right', // Change position if needed
+      timeOut: 3000,
+    })
   ],
   declarations: [
     GagComponent,

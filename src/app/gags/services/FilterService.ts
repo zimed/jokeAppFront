@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FilterService {
   private filtersSubject = new BehaviorSubject<{ culture: string | null, category: string | null, type: string | null }>({
-    culture: null,
+    culture: localStorage.getItem('selectedCulture'),
     category: null,
     type: null
   });

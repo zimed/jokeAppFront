@@ -10,14 +10,14 @@ export const Approutes: Routes = [
     path: '',
     component: FullComponent,
     children: [
-      { path: '', redirectTo: '/login', pathMatch: 'full',  },
+      { path: '', redirectTo: '/jokes', pathMatch: 'full',  },
       {
         path: 'login',
         loadChildren: () => import('./authentification/authentification.module').then(m => m.AuthentificationModule)
       },
       {
         path: 'jokes',
-        loadChildren: () => import('./gags/components/gags.module').then(m => m.GagModule),
+        loadChildren: () => import('./gags/components/gags.module').then(m => m.GagModule)
       }
     ]
   },
