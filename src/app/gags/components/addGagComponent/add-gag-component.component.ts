@@ -77,12 +77,12 @@ export class AddGagComponentComponent implements OnInit {
     this.gagService.addGag(payload).subscribe({
       next: (response) => {
         console.log('Joke added successfully:', response);
-        this.toastr.success('Joke added successfully!');
+        this.toastr.success('Hello world!', 'Success');
       },
       error: (error) => {
         console.error('Error adding joke:', error);
         this.errorCreation = 'Une erreur est survenue lors de l\'ajout de la blague.';
-        this.toastr.error('Failed to add joke!', 'Error');
+        this.toastr.error('Something went wrong!', 'Error');
       }
     });
   }
