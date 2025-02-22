@@ -1,105 +1,118 @@
 /* Sidebar Container */
 .sidebar {
-    width: 250px;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #ddd;
-    height: 100vh;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Filter Toggle Button */
-  .filter-toggle-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4B4F55;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px; /* Space below the button */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Space between icon and text */
-  }
-  
-  .filter-toggle-button:hover {
-    background-color: #555;
-  }
-  
-  /* Filter Details */
-  .filter-details {
-    overflow: hidden; /* Hide overflow content */
-    max-height: 0; /* Start with a height of 0 */
-    transition: max-height 0.3s ease-out; /* Smooth transition for height */
-  }
-  .filter-details.open {
-    max-height: 500px; /* Set a max height that fits your content */
-    overflow-y: auto;
-  }
-  
-  /* Filter Group */
-  .filter-group {
-    margin-bottom: 20px;
-  }
-  
-  /* Filter Title */
-  .filter-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #4B4F55;
-    text-align: center; /* Center the filter label */
-  }
-  
-  /* Button Group */
-  .button-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px; /* Smaller gap between buttons */
-  }
-  
-  /* Button Styling */
-  .button-group button {
-    padding: 6px 12px; /* Smaller padding for smaller buttons */
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background-color: #f0f0f0;
-    color: #333;
-    font-size: 12px; /* Smaller font size */
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  /* Selected Button */
-  .button-group button.selected {
-    background-color: #666;
-    color: white;
-    border-color: #666;
-  }
-  
-  /* Hover Effect */
-  .button-group button:hover {
-    background-color: #ddd;
-  }
-  
-  /* Apply Filters Button */
-  .apply-button {
-    width: 100%; /* Full width */
-    padding: 8px; /* Smaller padding */
-    background-color: #666;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9rem; /* Smaller font size */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px; /* Add some space above the button */
-  }
-  
-  .apply-button:hover {
-    background-color: #555;
-  }
+  width: 250px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Toggle Button */
+.filter-toggle-button {
+  width: 100%;
+  padding: 10px;
+  background-color: white; /* White background */
+  color: #4B4F55; /* Dark grey text */
+  border: 1px solid #ddd; /* Grey border */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between text and icon */
+  position: relative; /* For positioning the icon */
+}
+
+.filter-toggle-button:hover {
+  background-color: #f8f9fa; /* Light grey background on hover */
+  border-color: #ccc; /* Slightly darker border on hover */
+}
+
+/* Icons (fa fa-angle-double-up and fa fa-angle-double-down) */
+.filter-toggle-button i {
+  position: absolute; /* Position the icon absolutely */
+  right: 10px; /* Align to the extreme right */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+  font-size: 14px; /* Adjust icon size */
+  color: #4B4F55; /* Match text color */
+}
+
+/* Filter Details */
+.filter-details {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.filter-details.open {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Filter Group */
+.filter-group {
+  margin-bottom: 20px;
+}
+
+/* Filter Title */
+.filter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #4B4F55;
+  text-align: center;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Button Styling */
+.button-group button {
+  padding: 6px 12px;
+  border: 1px solid #ddd; /* Grey border */
+  border-radius: 20px;
+  background-color: white; /* White background */
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Selected Button */
+.button-group button.selected {
+  background-color: #4B4F55; /* Dark grey background */
+  color: white; /* White text */
+  border-color: #4B4F55; /* Dark grey border */
+}
+
+/* Hover Effect */
+.button-group button:hover {
+  background-color: #f8f9fa; /* Light grey background on hover */
+  border-color: #ccc; /* Slightly darker border on hover */
+}
+
+/* Apply Filters Button */
+.apply-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4B4F55; /* Dark grey background */
+  color: white; /* White text */
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.apply-button:hover {
+  background-color: #666; /* Slightly lighter grey on hover */
+}

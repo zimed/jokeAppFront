@@ -9,6 +9,7 @@
       likes: number;
       dislikes: number;
       type: string;
+      creationTime: string;
       category: string;
       context: string;
     }

@@ -95,4 +95,26 @@ export class AuthService {
     const payload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
     return payload.exp < Date.now() / 1000; // Check if the token is expired
   }
+
+    // Decode the JWT token
+    private decodeToken(token: string): any {
+      try {
+        const payload = token.split('.')[1]; // Get the payload part of the token
+        const decodedPayload = atob(payload); // Decode the base64 payload
+        return JSON.parse(decodedPayload); // Parse the JSON payload
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+      }
+    }
+  
+    // Get roles from the JWT token
+    getRoles(): string[] {
+      const token = this.getToken();
+      if (token) {
+        const payload = this.decodeToken(token);
+        return payload.roles || []; // Assuming roles are stored in the 'roles' claim
+      }
+      return [];
+    }
 }

@@ -2,3 +2,38 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Custom toast styling */
+.custom-toast {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border-radius: 8px; /* Rounded corners */
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Fun font for jokes */
+    font-size: 16px; /* Larger font size for readability */
+    padding: 15px; /* Add some padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+    position: relative; /* Ensure the close button is positioned correctly */
+  }
+  
+  /* Custom close button */
+  .toast-close-button {
+    color: white; /* White close button */
+    font-size: 20px; /* Larger close button */
+    position: absolute; /* Position the close button */
+    top: 5px; /* Adjust top position */
+    right: 5px; /* Adjust right position */
+    background: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    cursor: pointer; /* Add pointer cursor */
+  }
+  
+  /* Hover effect for close button */
+  .toast-close-button:hover {
+    color: #ffeb3b; /* Change color on hover */
+  }
+  
+  /* Progress bar styling */
+  .toast-progress {
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white progress bar */
+  }

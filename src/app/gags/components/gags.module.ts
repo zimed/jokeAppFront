@@ -7,8 +7,7 @@ import { GagComponent } from "./mainPageComponent/gags.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CultureChoiceComponent } from './culture-choice/culture-choice.component'; 
 import { AuthGuard } from '../../authentification/auth.guard';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Required for animations
-import { ToastrModule } from 'ngx-toastr'; 
+
 
 const routes: Routes = [
   {
@@ -37,8 +36,6 @@ const routes: Routes = [
     CommonModule,
     MatProgressSpinnerModule,
     RouterModule.forChild(routes),
-    BrowserAnimationsModule, // Add this
-    ToastrModule.forRoot(), 
   ],
   declarations: [
     GagComponent,

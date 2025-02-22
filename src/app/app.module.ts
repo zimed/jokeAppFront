@@ -24,8 +24,7 @@ import { AuthentificationComponent } from './authentification/authentification.c
 import { CultureChoiceComponent } from './gags/components/culture-choice/culture-choice.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio'; // Import this module
-
-
+import { ToastrModule } from 'ngx-toastr'; 
 
 
 
@@ -48,9 +47,15 @@ import { MatRadioModule } from '@angular/material/radio'; // Import this module
     FullComponent,
     NavigationComponent,
     SidebarComponent,
-
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    ToastrModule.forRoot({
+      timeOut: 13000, // Toast will disappear after 3 seconds
+      positionClass: 'toast-top-right', // Position of the toast
+      preventDuplicates: true, // Prevent duplicate toasts
+      progressBar: true, // Show progress bar
+      closeButton: true, // Show close button
+    }),
   ],
   providers: [
     {

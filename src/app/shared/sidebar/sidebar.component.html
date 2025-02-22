@@ -4,10 +4,12 @@
       Ajouter une blague
     </button>
     <button class="filter-toggle-button">
-      Themes
+      Themes 
     </button>
     <button class="filter-toggle-button" (click)="toggleFilters()">
       {{ isFiltersVisible ? 'Masquer les filtres' : 'Filtres' }}
+      <i *ngIf="isFiltersVisible" class="fa fa-angle-double-up" aria-hidden="true" style=""></i>
+      <i *ngIf="!isFiltersVisible" class="fa fa-angle-double-down" aria-hidden="true"></i>
     </button>
   
     <!-- Filter Details (Hidden by Default) -->

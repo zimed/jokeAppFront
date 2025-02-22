@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders  } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Gag } from '../../shared/models/gags.interface';
 import { PaginatedGagResponse, GagResponse } from '../../shared/models/operational.objects.interfaces';
+import { timeAgo } from 'src/app/shared/services/utilsService';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class GagService {
           gagText: joke.textBody,
           laChute: joke.punchline || '',
           createur_name: joke.user?.username || 'Unknown',
+          creation_dateTime: joke.creationTime,
           likes: joke.likes,
           dislikes: joke.dislikes,
           type: joke.type,
@@ -46,6 +48,7 @@ export class GagService {
           gagText: joke.textBody,
           laChute: joke.punchline || '',
           createur_name: joke.user?.username || 'Unknown',
+          creation_dateTime: joke.creationTime,
           likes: joke.likes,
           dislikes: joke.dislikes,
           type: joke.type,
@@ -81,6 +84,7 @@ export class GagService {
           gagText: joke.textBody,
           laChute: joke.punchline || '',
           createur_name: joke.user?.username || 'Unknown',
+          creation_dateTime: timeAgo(joke.creationTime),
           likes: joke.likes,
           dislikes: joke.dislikes,
           type: joke.type,
@@ -101,6 +105,19 @@ export class GagService {
     });
 
     return this.http.post(`${this.apiUrl}/addJoke`, payload, { headers });
+  }
+
+
+  deleteJoke(jokeId: number): Observable<any> {
+    const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    return this.http.request('DELETE', `${this.apiUrl}/deleteJoke/${jokeId}`, {
+      headers
+    });
   }
 
 

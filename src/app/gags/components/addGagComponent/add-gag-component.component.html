@@ -42,20 +42,6 @@
           </div>
         </div>
   
-        <!-- Culture Selection -->
-        <div class="form-group">
-          <label for="culture">Sélectionnez la culture (*)</label>
-          <select id="culture" class="form-control" formControlName="culture">
-            <option value="" disabled>Sélectionnez une culture</option>
-            <option *ngFor="let culture of cultures" [value]="culture">{{ culture }}</option>
-          </select>
-        </div>
-        <div *ngIf="addTextGagForm.controls['culture'].invalid && (addTextGagForm.controls['culture'].dirty || addTextGagForm.controls['culture'].touched)" class="alert alert-danger">
-          <div *ngIf="addTextGagForm.controls['culture'].errors?.['required']">
-            La culture est obligatoire
-          </div>
-        </div>
-  
         <!-- Categorie Selection -->
         <div class="form-group">
           <label for="categorie">Sélectionnez le type (*)</label>

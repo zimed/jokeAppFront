@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { GagService } from '../../services/GagService';
 import { ToastrService } from 'ngx-toastr';
+import {CultureService} from '../../services/CultureService';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-gag-component',
@@ -11,18 +13,17 @@ import { ToastrService } from 'ngx-toastr';
 export class AddGagComponentComponent implements OnInit {
   addTextGagForm!: FormGroup;
   errorCreation: string | null = null;
-  cultures = ['MAROCAINE', 'FRANÇAISE'];
   types = ['Devinette', 'Blague'];
   categories = ['IRONIE', 'SARCASME', 'HUMOUR NOIR'];
+  culture = localStorage.getItem('selectedCulture');
 
-  constructor(private formBuilder: FormBuilder, private gagService: GagService, private toastr: ToastrService) {}
+  constructor(private router: Router, private formBuilder: FormBuilder, private gagService: GagService, private toastr: ToastrService, private cultureService: CultureService) {}
 
   ngOnInit(): void {
     this.addTextGagForm = this.formBuilder.group({
       titre: ['', Validators.maxLength(80)],
       gagContenu: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
       laChute: ['', Validators.maxLength(400)],
-      culture: ['', Validators.required],
       type: ['', Validators.required],
       selectedCategory: [null, Validators.required] // Single selected category
     });
@@ -44,12 +45,7 @@ export class AddGagComponentComponent implements OnInit {
   }
 
   // Build the API payload from the form data
-  private buildPayload(): any {
-    const cultureMapping: { [key: string]: string } = {
-      'MAROCAINE': 'MAR',
-      'FRANÇAISE': 'FR'
-    };
-
+  private buildPayload(): any { 
     const categorieMapping: { [key: string]: string } = {
       'IRONIE': 'IRONIE',
       'SARCASME': 'SARCASM',
@@ -61,12 +57,16 @@ export class AddGagComponentComponent implements OnInit {
       'Blague': 'JOKE',
     };
 
+    this.cultureService.culture$.subscribe((culture) => {
+      this.culture = this.cultureService.getCulture();
+    });
+
     return {
       title: this.addTextGagForm.value.titre,
       textBody: this.addTextGagForm.value.gagContenu,
       type: typeMapping[this.addTextGagForm.value.type],
       category: categorieMapping[this.addTextGagForm.value.selectedCategory],
-      culture: cultureMapping[this.addTextGagForm.value.culture],
+      culture: this.culture,
       punchline: this.addTextGagForm.value.laChute,
       likes: 0,
       dislikes: 0
@@ -76,13 +76,13 @@ export class AddGagComponentComponent implements OnInit {
   private sendJokeToBackend(payload: any): void {
     this.gagService.addGag(payload).subscribe({
       next: (response) => {
-        console.log('Joke added successfully:', response);
-        this.toastr.success('Hello world!', 'Success');
+        this.router.navigate(['/jokes']);
+        this.toastr.success('Votre post est en attente d\'acceptation !', 'Success');
       },
       error: (error) => {
         console.error('Error adding joke:', error);
         this.errorCreation = 'Une erreur est survenue lors de l\'ajout de la blague.';
-        this.toastr.error('Something went wrong!', 'Error');
+        this.toastr.error('Erreur d\'ajout !', 'Error');
       }
     });
   }

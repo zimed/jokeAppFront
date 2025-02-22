@@ -5,6 +5,8 @@ import { environment } from '../../../../environments/environment';
 import { FilterService } from '../../services/FilterService';
 import { Subscription, combineLatest} from 'rxjs';
 import { CultureService } from '../../services/CultureService';
+import { AuthService } from '../../../authentification/auth.service';
+
 
 @Component({
   templateUrl: './gags.component.html',
@@ -20,13 +22,17 @@ export class GagComponent implements OnInit {
   currentPage: number = 0;
   totalPages: number = 0;
   currentCulture: string = 'MAR';
+  roles: string[] = [];
   public userImageSrc: string = 'assets/images/users/user_francais.png';
   private filtersSubscription: Subscription = new Subscription();
 
-  constructor(private gagService: GagService, private filterService: FilterService, private cultureService: CultureService) {
+  constructor(private gagService: GagService, private authService : AuthService, private filterService: FilterService, private cultureService: CultureService) {
   }
 
   ngOnInit() {
+
+    this.roles = this.authService.getRoles();
+    console.log('User roles:', this.roles);
     this.loading = true;
 
     this.filtersSubscription = combineLatest([
@@ -72,6 +78,10 @@ export class GagComponent implements OnInit {
     });
   }
 
+  isAbleToDelete(): boolean {
+    return this.roles.includes('ROLE_ADMIN'); // Check if the user has the ADMIN role
+  }
+
   loadGags1() {
     this.loading = true;
     this.gagService.getPaginatedGags(this.currentPage, environment.gagPageSize).subscribe({
@@ -93,6 +103,19 @@ export class GagComponent implements OnInit {
       this.currentPage++;
       this.loadGags();  // Load more gags on button click
     }
+  }
+
+  deleteJoke(jokeId: number): void {
+    this.gagService.deleteJoke(jokeId).subscribe({
+      next: () => {
+        console.log('Joke deleted successfully');
+        // Remove the deleted joke from the list
+        this.gags = this.gags.filter((gag) => gag.id !== jokeId);
+      },
+      error: (err) => {
+        console.error('Error deleting joke:', err);
+      },
+    });
   }
 
 

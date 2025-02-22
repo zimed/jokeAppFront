@@ -61,6 +61,32 @@ img {
     position : absolute;
     left: 80px;
 }
+/* Delete Button */
+.delete-button {
+    position: absolute;
+    right: 10px; /* Position on the right */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
+    background-color: #ff4444; /* Red background */
+    color: white; /* White icon */
+    border: none;
+    border-radius: 50%; /* Circular button */
+    width: 30px; /* Fixed width */
+    height: 30px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+
+.delete-button i {
+    font-size: 16px; /* Adjust icon size */
+}
 
 
 .section_username{
