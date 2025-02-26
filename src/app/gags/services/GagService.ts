@@ -4,12 +4,13 @@ import { Observable, map } from 'rxjs';
 import { Gag } from '../../shared/models/gags.interface';
 import { PaginatedGagResponse, GagResponse } from '../../shared/models/operational.objects.interfaces';
 import { timeAgo } from 'src/app/shared/services/utilsService';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GagService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiUrl +'/api';
 
   constructor(private http: HttpClient) {}
 

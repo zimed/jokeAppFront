@@ -2,6 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable, tap, BehaviorSubject } from 'rxjs';
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
-  private apiUrl = 'http://localhost:8080/auth'; // Base URL for authentication endpoints
+  private apiUrl = environment.apiUrl + '/auth'; // Base URL for authentication endpoints
   private tokenKey = 'authToken'; // Key for storing the JWT token in localStorage
 
   constructor(private router: Router, private activateRoute: ActivatedRoute, private http: HttpClient) {
