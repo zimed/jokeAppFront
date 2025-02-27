@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, NgIf } from '@angular/common';
 import { FilterService } from '../../gags/services/FilterService';
-
+import { SharedUIObjectsService } from 'src/app/gags/services/SharedUIObjectsService';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,12 +23,13 @@ export class SidebarComponent {
 
   isFiltersVisible: boolean = false; 
 
-  constructor(private filterService: FilterService, private router: Router) {}
+  constructor(private filterService: FilterService, private router: Router, private sharedUIObjectService : SharedUIObjectsService) {}
 
 
 
 
   navigateToAddGag(): void {
+    this.sharedUIObjectService.updateShowSecondaryMenu(false);
     this.router.navigate(['/jokes/add']); // Navigate to the specified route
   }
 

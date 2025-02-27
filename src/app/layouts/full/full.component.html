@@ -24,7 +24,7 @@
       >
         <!-- This is for the sidebar toggle which is visible on mobile only -->
         <a
-          (click)="showMobileMenu = !showMobileMenu"
+          (click)="clickOnSecondaryMenu()"
           class="nav-toggler waves-effect waves-light d-block d-lg-none"
           href="javascript:void(0)"
         >
@@ -55,7 +55,7 @@
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          (click)="isCollapsed = !isCollapsed"
+          (click)="clickOnPrimaryMenu()"
           [attr.aria-expanded]="!isCollapsed"
         >
           <i class="bi bi-text-right fs-6"></i>

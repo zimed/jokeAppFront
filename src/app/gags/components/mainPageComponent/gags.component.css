@@ -6,6 +6,7 @@ mat-progress-spinner {
 #conteneur{
     position: relative;
     width : 100%;
+    display: inline;
 }
 
 #gagList {
@@ -27,7 +28,7 @@ mat-progress-spinner {
     border: 1px solid #ced4da;
     position: relative;
     width : 100%;
-    margin-top:5%;
+    margin-top:2%;
     background-color: white;
     border-radius: 30px;
 }

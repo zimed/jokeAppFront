@@ -1,5 +1,4 @@
 <div *ngIf="loading">
-    gfgfgg
     <mat-progress-spinner
       mode="indeterminate"
       diameter="50"
@@ -54,18 +53,38 @@
                             <a href="{{'/gags/' + gag.createur_name + '/' + gag.id}}"><h5>NoTitle</h5></a>
                         </div>
                         <div class="section_content">
-                            <p *ngIf="isArabic(gag.titreGag)===true" style="text-align : right;" [innerHTML]="gag.gagText" class="gag"></p>
-                            <p *ngIf="isArabic(gag.titreGag)===false" [innerHTML]="gag.gagText" class="gag"></p>
-                            <div *ngIf="gag.laChute!==''">
-                                <button id="laChute" href="#" class="btn btn-default" (click)="updateShowLachute(gag.id,true)">
-                                    <i class="fa fa-angle-double-down" aria-hidden="true"></i>
-                                </button>
-                                <div *ngIf="currentShowLaChute===true  && currentGagShowLaChute==gag.id">
-                                    <div  *ngIf="isArabic(gag.titreGag)===true" style="text-align : right;"  [innerHTML]="gag.laChute" class="laChuteContainer" id="{{'chuteGag' + gag.id}}">   </div>          
-                                    <div  *ngIf="isArabic(gag.titreGag)===false" [innerHTML]="gag.laChute" class="laChuteContainer" id="{{'chuteGag' + gag.id}}">   </div>                                                                                        
-                                </div>
+                            <!-- Gag Text -->
+                            <p [ngClass]="{'text-right': isArabic(gag.titreGag)}" [innerHTML]="gag.gagText" class="gag"></p>
+                          
+                            <!-- La Chute Section -->
+                            <div *ngIf="gag.laChute !== ''">
+                              <!-- Toggle Button -->
+                              <button
+                                id="laChute"
+                                class="btn btn-default"
+                                (click)="toggleLaChute(gag.id)"
+                              >
+                                <i
+                                  class="fa"
+                                  [ngClass]="{
+                                    'fa-angle-double-down': !isLaChuteShown(gag.id),
+                                    'fa-angle-double-up': isLaChuteShown(gag.id)
+                                  }"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                          
+                              <!-- La Chute Content -->
+                              <div *ngIf="isLaChuteShown(gag.id)">
+                                <div
+                                  [ngClass]="{'text-right': isArabic(gag.titreGag)}"
+                                  [innerHTML]="gag.laChute"
+                                  class="laChuteContainer"
+                                  [id]="'chuteGag' + gag.id"
+                                ></div>
+                              </div>
                             </div>
-                        </div> 
+                          </div> 
                     </div>
 
                     

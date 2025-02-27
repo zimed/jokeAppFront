@@ -5,6 +5,7 @@ import { NavigationComponent } from "src/app/shared/header/navigation.component"
 import { SidebarComponent } from "src/app/shared/sidebar/sidebar.component";
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/authentification/auth.service';
+import { SharedUIObjectsService } from 'src/app/gags/services/SharedUIObjectsService';
 
 //declare var $: any;
 
@@ -17,7 +18,7 @@ import { AuthService } from 'src/app/authentification/auth.service';
 })
 export class FullComponent implements OnInit {
 
-  constructor(private authService: AuthService, public router: Router) {}
+  constructor(private authService: AuthService, public router: Router, private sharedUIObjectService : SharedUIObjectsService) {}
   public isCollapsed = false;
   public innerWidth: number = 0;
   public defaultSidebar: string = "";
@@ -32,7 +33,19 @@ export class FullComponent implements OnInit {
   ngOnInit() {
     this.defaultSidebar = this.sidebartype;
     this.handleSidebar();
+    this.sharedUIObjectService.showSecondaryMenu$.subscribe((showSecondaryMenu) => {
+      this.showMobileMenu = showSecondaryMenu;
+    });
+  }
 
+  clickOnPrimaryMenu() {
+    this.isCollapsed = !this.isCollapsed
+    this.showMobileMenu = false;
+  }
+
+  clickOnSecondaryMenu() {
+    this.showMobileMenu = !this.showMobileMenu
+    this.isCollapsed = false;
   }
 
   @HostListener("window:resize", ["$event"])

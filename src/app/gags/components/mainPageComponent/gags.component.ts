@@ -19,6 +19,7 @@ export class GagComponent implements OnInit {
   errorMsg: string | null = null;
   currentShowLaChute: boolean = false;
   currentGagShowLaChute: number | null = null;
+  showLaChuteStates: { [key: number]: boolean } = {};
   currentPage: number = 0;
   totalPages: number = 0;
   currentCulture: string = 'MAR';
@@ -57,6 +58,15 @@ export class GagComponent implements OnInit {
     if (this.filtersSubscription) {
       this.filtersSubscription.unsubscribe();
     }
+  }
+
+  toggleLaChute(gagId: number) {
+    this.showLaChuteStates[gagId] = !this.showLaChuteStates[gagId];
+  }
+
+  // Check if a specific post is expanded
+  isLaChuteShown(gagId: number): boolean {
+    return this.showLaChuteStates[gagId] || false;
   }
 
   loadGags(filters?: { culture: string | null, category: string | null, type: string | null }) {
