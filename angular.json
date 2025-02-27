@@ -82,7 +82,7 @@
               "optimization": false,
               "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
+              "sourceMap": false, // to not show the sources in production
               "namedChunks": true
             }
           },
