@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://82.29.168.111:8080',
+    apiUrl: 'http://82.29.168.111:8080',
     gagPageSize: 5
 };
