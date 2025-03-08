@@ -44,8 +44,8 @@ export class AuthService {
   }
 
   // Registration method
-  register(username: string, password: string): Observable<string> {
-    const payload = { username, password };
+  register(username: string, email : String, password: string): Observable<string> {
+    const payload = { username, email, password };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
@@ -58,6 +58,15 @@ export class AuthService {
         },
       })
     );
+  }
+
+  forgotPassword(username: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password/${username}`,{}, { responseType: 'text' });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    const url = `${this.apiUrl}/reset-password?token=${token}&newPassword=${newPassword}`;
+    return this.http.post(url, {}, { responseType: 'text' });
   }
 
   // Check if the user is logged in
@@ -117,5 +126,14 @@ export class AuthService {
         return payload.roles || []; // Assuming roles are stored in the 'roles' claim
       }
       return [];
+    }
+
+    getUserNameFromToken(): string | null {
+      const token = this.getToken();
+      if (token) {
+        const payload = this.decodeToken(token);
+        return payload.sub; // Assuming roles are stored in the 'roles' claim
+      }
+      return null;
     }
 }

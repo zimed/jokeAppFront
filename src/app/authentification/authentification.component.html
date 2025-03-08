@@ -1,21 +1,27 @@
 <div class="auth-container">
-  <h2>{{ isLoginMode ? 'Se connecter' : 'Inscription' }}</h2>
+  <h2>{{ isLoginMode ? 'Se connecter' : isForgotPasswordMode ? 'Mot de passe oublié' : 'Inscription' }}</h2>
 
-  <!-- Toggle between Login and Register -->
+  <!-- Toggle between Login, Registration, and Forgot Password -->
   <div class="toggle-mode">
-    <button class="toggle-button" (click)="toggleMode()">
+    <button *ngIf="!isForgotPasswordMode" class="toggle-button" (click)="toggleMode()">
       {{ isLoginMode ? 'Inscription' : 'Se connecter' }}
+    </button>
+    <button *ngIf="isLoginMode" class="toggle-button" (click)="toggleForgotPasswordMode()">
+      Mot de passe oublié ?
+    </button>
+    <button *ngIf="isForgotPasswordMode" class="toggle-button" (click)="toggleForgotPasswordMode()">
+      Retour à la connexion
     </button>
   </div>
 
   <!-- Login Form -->
-  <form *ngIf="isLoginMode" (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+  <form *ngIf="isLoginMode && !isForgotPasswordMode" (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
     <div class="form-group">
-      <label for="username">login</label>
+      <label for="username">Login</label>
       <input type="text" id="username" [(ngModel)]="username" name="username" required>
     </div>
     <div class="form-group">
-      <label for="password">mot de passe</label>
+      <label for="password">Mot de passe</label>
       <input type="password" id="password" [(ngModel)]="password" name="password" required>
     </div>
     <div *ngIf="errorMessage" class="error-message">
@@ -27,24 +33,45 @@
   </form>
 
   <!-- Registration Form -->
-  <form *ngIf="!isLoginMode" (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
+  <form *ngIf="!isLoginMode && !isForgotPasswordMode" (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
     <div class="form-group">
       <label for="username">Login</label>
       <input type="text" id="username" [(ngModel)]="username" name="username" required>
     </div>
     <div class="form-group">
-      <label for="password">mot de passe</label>
+      <label for="email">Email</label>
+      <input type="text" id="email" [(ngModel)]="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
       <input type="password" id="password" [(ngModel)]="password" name="password" required>
     </div>
     <div class="form-group">
-      <label for="confirmPassword">confirmer mot de passe</label>
+      <label for="confirmPassword">Confirmer mot de passe</label>
       <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required>
     </div>
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Creer votre compte</button>
+      <button type="submit" class="btn btn-primary">Créer votre compte</button>
+    </div>
+  </form>
+
+  <!-- Forgot Password Form -->
+  <form *ngIf="isForgotPasswordMode" (ngSubmit)="onForgotPasswordSubmit(forgotPasswordForm)" #forgotPasswordForm="ngForm">
+    <div class="form-group">
+      <label for="forgotUsername">Login</label>
+      <input type="text" id="forgotUsername" [(ngModel)]="forgotUsername" name="forgotUsername" required>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Réinitialiser le mot de passe</button>
     </div>
   </form>
 </div>
