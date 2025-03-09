@@ -8,6 +8,7 @@ export interface Gag {
     context: string;
     createur_name?: string;
     creation_dateTime: string;
+    status?: string;
     likes?: number; // Define a more specific type based on your data structure
     disklikes?: number; // Define a more specific type based on your data structure
   }

@@ -1,11 +1,11 @@
 <div id="addTextJoke">
-    <h3>Ajouter votre blague !</h3>
+    <h3>Ajouter votre post !</h3>
     <br><br>
     <form [formGroup]="addTextGagForm" (ngSubmit)="onClickSendText()" novalidate>
       <fieldset>
         <!-- Titre -->
         <div class="form-group">
-          <label>Entrez le titre de votre blague (facultatif)</label>
+          <label>Entrez le titre de votre post (facultatif)</label>
           <input type="text" class="form-control" formControlName="titre" id="nom" autocomplete="off">
         </div>
         <div *ngIf="addTextGagForm.controls['titre'].invalid && (addTextGagForm.controls['titre'].dirty || addTextGagForm.controls['titre'].touched)" class="alert alert-danger">
@@ -16,12 +16,12 @@
   
         <!-- Blague Contenu -->
         <div class="form-group">
-          <label>Racontez votre blague (*)</label>
-          <textarea class="form-control" formControlName="gagContenu" rows="5" autocomplete="off"></textarea>
+          <label>Post (*)</label>
+          <textarea class="form-control" formControlName="gagContenu" rows="6" autocomplete="off"></textarea>
         </div>
         <div *ngIf="addTextGagForm.controls['gagContenu'].invalid && (addTextGagForm.controls['gagContenu'].dirty || addTextGagForm.controls['gagContenu'].touched)" class="alert alert-danger">
           <div *ngIf="addTextGagForm.controls['gagContenu'].errors?.['minlength']">
-            Longueur minimale: 10 caractères
+            Longueur minimale: 5 caractères
           </div>
           <div *ngIf="addTextGagForm.controls['gagContenu'].errors?.['maxlength']">
             Longueur maximale: 1000 caractères
@@ -52,13 +52,13 @@
         </div>
         <div *ngIf="addTextGagForm.controls['type'].invalid && (addTextGagForm.controls['type'].dirty || addTextGagForm.controls['type'].touched)" class="alert alert-danger">
           <div *ngIf="addTextGagForm.controls['type'].errors?.['required']">
-            La catégorie est obligatoire
+            Le type est obligatoire
           </div>
         </div>
   
         <!-- Type Selection -->
         <div class="form-group">
-          <label>Sélectionnez la catégorie de blague (*)</label>
+          <label>Sélectionnez la catégorie de blague (facultatif)</label>
           <div class="button-group">
             <div *ngFor="let category of categories" class="hashtag-button">
               <button type="button"

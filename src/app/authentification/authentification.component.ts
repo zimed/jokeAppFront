@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-authentication',
@@ -19,7 +20,7 @@ export class AuthentificationComponent {
   isLoginMode: boolean = true; // Toggle between login and registration
   isForgotPasswordMode: boolean = false; // Toggle for forgot password
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   // Toggle between login and registration modes
   toggleMode(): void {
@@ -84,13 +85,14 @@ export class AuthentificationComponent {
 
     this.authService.forgotPassword(this.forgotUsername).subscribe({
       next: (response) => {
-        console.log('Email de réinitialisation envoyé:', response);
-        this.successMessage = response; // Display the plain text response
+        this.toggleForgotPasswordMode();
+        this.toastr.success(response)
         this.errorMessage = '';
       },
       error: (error) => {
         console.error('Échec de l\'envoi de l\'email:', error);
         this.errorMessage = 'Échec de l\'envoi de l\'email. Veuillez réessayer.';
+        this.toastr.error('Échec de l\'envoi de l\'email:', error);
         this.successMessage = '';
       },
     });

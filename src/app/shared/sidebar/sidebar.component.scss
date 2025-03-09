@@ -6,6 +6,7 @@
   border-right: 1px solid #ddd;
   height: 100vh;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
 }
 
 /* Filter Toggle Button */
@@ -39,6 +40,23 @@
   transform: translateY(-50%); /* Center vertically */
   font-size: 14px; /* Adjust icon size */
   color: #4B4F55; /* Match text color */
+}
+
+#addPost {
+  width: 100%;
+  padding: 10px;
+  background-color: white; /* White background */
+  color: #4B4F55; /* Dark grey text */
+  border: 1px solid #ddd; /* Grey border */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: flex-start; /* Align items to the left */
+  gap : 8px;
 }
 
 /* Filter Details */
@@ -80,7 +98,7 @@
   border: 1px solid #ddd; /* Grey border */
   border-radius: 20px;
   background-color: white; /* White background */
-  color: #333;
+  color: #4B4F55;
   font-size: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -93,10 +111,18 @@
   border-color: #4B4F55; /* Dark grey border */
 }
 
-/* Hover Effect */
-.button-group button:hover {
-  background-color: #f8f9fa; /* Light grey background on hover */
-  border-color: #ccc; /* Slightly darker border on hover */
+
+/* Styling the Select Element */
+.filter-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: white; /* White background */
+  color: #4B4F55; /* Dark text color */
+  cursor: pointer;
+  transition: border-color 0.3s ease;
 }
 
 /* Apply Filters Button */

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { AuthentificationComponent } from './authentification/authentification.component';
 import { AuthGuard } from './authentification/auth.guard';
+import { ResetPasswordComponent } from './authentification/reset-password/reset-password.component';
 
 export const Approutes: Routes = [
   {
@@ -18,7 +19,14 @@ export const Approutes: Routes = [
       {
         path: 'jokes',
         loadChildren: () => import('./gags/components/gags.module').then(m => m.GagModule)
-      }
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () =>
+          import('./authentification/reset-password/reset-password.component').then(
+            (m) => m.ResetPasswordComponent
+          ),
+      },
     ]
   },
   {

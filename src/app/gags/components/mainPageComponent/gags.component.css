@@ -13,6 +13,7 @@ mat-progress-spinner {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between; /* Distributes space between items */
+    width : 100%;
 }
   
 #gagBloc {
@@ -20,6 +21,7 @@ mat-progress-spinner {
     box-sizing: border-box;
     padding: 0.5em;
     margin-bottom: 1em; /* Adds space between rows */
+    width : 100%;
 }
 
 /*"*/
@@ -28,7 +30,6 @@ mat-progress-spinner {
     border: 1px solid #ced4da;
     position: relative;
     width : 100%;
-    margin-top:2%;
     background-color: white;
     border-radius: 30px;
 }
@@ -62,33 +63,31 @@ img {
     position : absolute;
     left: 80px;
 }
+
+.postAction{
+    position : absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    gap : 10px;
+    align-items: center;
+}
 /* Delete Button */
-.delete-button {
-    position: absolute;
-    right: 10px; /* Position on the right */
+.delete-button, .approuve-button {
+    margin-top : 10%;
     top: 50%; /* Center vertically */
     transform: translateY(-50%); /* Center vertically */
-    background-color: #ff4444; /* Red background */
+    background-color: #4B4F55; /* Red background */
     color: white; /* White icon */
     border: none;
     border-radius: 50%; /* Circular button */
     width: 30px; /* Fixed width */
     height: 30px; /* Fixed height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;  
 }
-
-.delete-button:hover {
-    background-color: #cc0000; /* Darker red on hover */
-}
-
-.delete-button i {
-    font-size: 16px; /* Adjust icon size */
-}
-
 
 .section_username{
     display: block;
@@ -130,7 +129,8 @@ img {
 }
 
 h5 {
-    color : #112347;
+    font-size:18px;
+    color : #4B4F55;
 }
 
 #title{
@@ -155,6 +155,7 @@ h5 {
 }
 
 .gag{
+    font-size:15px;
     overflow: auto;
     width : 100%;
     overflow: auto;

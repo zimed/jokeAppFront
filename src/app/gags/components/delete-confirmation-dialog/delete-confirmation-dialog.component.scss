@@ -1,0 +1,29 @@
+:host {
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    color: #ff4444; // Red color for the title
+    font-weight: bold;
+  }
+  
+  mat-dialog-content {
+    font-size: 16px;
+    color: #333;
+    margin: 20px 0;
+  }
+  
+  mat-dialog-actions {
+    justify-content: flex-end;
+  
+    button {
+      margin-left: 10px;
+  
+      &[color="warn"] {
+        background-color: #ff4444; // Red background for the delete button
+        color: white;
+      }
+    }
+  }

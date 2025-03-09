@@ -12,6 +12,7 @@
       creationTime: string;
       category: string;
       context: string;
+      status: string;
     }
 
     export interface PaginatedGagResponse {

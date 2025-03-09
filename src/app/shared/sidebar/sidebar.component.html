@@ -1,46 +1,57 @@
 <div class="sidebar">
-    <!-- Filter Button -->
-    <button class="filter-toggle-button" (click)="navigateToAddGag()">
-       + Ajouter une blague
-    </button>
-    <button class="filter-toggle-button">
-      Themes 
-    </button>
-    <button class="filter-toggle-button" (click)="toggleFilters()">
-      {{ isFiltersVisible ? 'Masquer les filtres' : 'Filtres' }}
-      <i *ngIf="isFiltersVisible" class="fa fa-angle-double-up" aria-hidden="true" style=""></i>
-      <i *ngIf="!isFiltersVisible" class="fa fa-angle-double-down" aria-hidden="true"></i>
-    </button>
-  
-    <!-- Filter Details (Hidden by Default) -->
-    <div *ngIf="isFiltersVisible" class="filter-details" [class.open]="isFiltersVisible">
-      <!-- Category Filter -->
-      <div class="filter-group">
-        <h4 class="filter-title">Category</h4>
-        <div class="button-group">
-          <button *ngFor="let category of categories"
-                  type="button"
-                  [class.selected]="selectedCategory === category"
-                  (click)="selectCategory(category)">
-            {{ category }}
-          </button>
-        </div>
+  <!-- Filter Button -->
+  <button id="addPost" (click)="navigateToAddGag()">
+    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+    Ajouter un post
+  </button>
+
+  <button class="filter-toggle-button">
+    Themes 
+  </button>
+  <button class="filter-toggle-button" (click)="toggleFilters()">
+    {{ isFiltersVisible ? 'Masquer les filtres' : 'Filtres' }}
+    <i *ngIf="isFiltersVisible" class="fa fa-angle-double-up" aria-hidden="true"></i>
+    <i *ngIf="!isFiltersVisible" class="fa fa-angle-double-down" aria-hidden="true"></i>
+  </button>
+
+  <!-- Filter Details (Hidden by Default) -->
+  <div *ngIf="isFiltersVisible" class="filter-details" [class.open]="isFiltersVisible">
+    <!-- Category Filter -->
+    <div class="filter-group">
+      <h4 class="filter-title">Category</h4>
+      <div class="button-group">
+        <button *ngFor="let category of categories"
+                type="button"
+                [class.selected]="selectedCategory === category"
+                (click)="selectCategory(category)">
+          {{ category }}
+        </button>
       </div>
-    
-      <!-- Type Filter -->
-      <div class="filter-group">
-        <h4 class="filter-title">Type</h4>
-        <div class="button-group">
-          <button *ngFor="let type of types"
-                  type="button"
-                  [class.selected]="selectedType === type"
-                  (click)="selectType(type)">
-            {{ type }}
-          </button>
-        </div>
-      </div>
-    
-      <!-- Apply Filters Button -->
-      <button class="apply-button" (click)="applyFilters()">Apply Filters</button>
     </div>
+
+    <!-- Type Filter -->
+    <div class="filter-group">
+      <h4 class="filter-title">Type</h4>
+      <div class="button-group">
+        <button *ngFor="let type of types"
+                type="button"
+                [class.selected]="selectedType === type"
+                (click)="selectType(type)">
+          {{ type }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Filter (Select) -->
+    <div *ngIf="isAbleToFilterStatus()"   class="filter-group">
+      <h4 class="filter-title">Status</h4>
+      <select [(ngModel)]="statusOption">
+        <option [value]="'APPROVED'">APPROVED</option>
+        <option [value]="'PENDING'">PENDING</option>
+      </select>
+    </div>
+
+    <!-- Apply Filters Button -->
+    <button class="apply-button" (click)="applyFilters()">Apply Filters</button>
   </div>
+</div>

@@ -6,7 +6,9 @@ import { FilterService } from '../../services/FilterService';
 import { Subscription, combineLatest} from 'rxjs';
 import { CultureService } from '../../services/CultureService';
 import { AuthService } from '../../../authentification/auth.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from '../delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   templateUrl: './gags.component.html',
@@ -23,17 +25,20 @@ export class GagComponent implements OnInit {
   currentPage: number = 0;
   totalPages: number = 0;
   currentCulture: string = 'MAR';
+  connectedUser: string | null = null;
   roles: string[] = [];
   public userImageSrc: string = 'assets/images/users/user_francais.png';
   private filtersSubscription: Subscription = new Subscription();
 
-  constructor(private gagService: GagService, private authService : AuthService, private filterService: FilterService, private cultureService: CultureService) {
+  constructor(private gagService: GagService, private authService : AuthService, private filterService: FilterService, private cultureService: CultureService, private dialog: MatDialog, private toastr: ToastrService) {
   }
 
   ngOnInit() {
 
     this.roles = this.authService.getRoles();
-    console.log('User roles:', this.roles);
+    this.connectedUser = this.authService.getUserNameFromToken();
+
+
     this.loading = true;
 
     this.filtersSubscription = combineLatest([
@@ -69,9 +74,9 @@ export class GagComponent implements OnInit {
     return this.showLaChuteStates[gagId] || false;
   }
 
-  loadGags(filters?: { culture: string | null, category: string | null, type: string | null }) {
+  loadGags(filters?: { culture: string | null, category: string | null, type: string | null, status: string | null }) {
     this.loading = true;
-    this.gagService.getFilteredGags(this.currentPage, environment.gagPageSize, filters?.type, filters?.category, filters?.culture).subscribe({
+    this.gagService.getFilteredGags(this.currentPage, environment.gagPageSize, filters?.type, filters?.category, filters?.culture, filters?.status).subscribe({
       next: (data) => {
         this.gags = this.gags.concat(data.gags);
         console.log("jokes data : ", data);
@@ -88,8 +93,12 @@ export class GagComponent implements OnInit {
     });
   }
 
-  isAbleToDelete(): boolean {
-    return this.roles.includes('ROLE_ADMIN'); // Check if the user has the ADMIN role
+  isAbleToDelete(creator_name : string | undefined): boolean {
+    return this.roles.includes('ROLE_ADMIN') || this.connectedUser===creator_name; // Check if the user has the ADMIN role
+  }
+
+  isAbleToValidate(){
+    return this.roles.includes('ROLE_ADMIN') 
   }
 
   loadGags1() {
@@ -128,6 +137,18 @@ export class GagComponent implements OnInit {
     });
   }
 
+  approuveJoke(jokeId: number): void {
+    this.gagService.approuvePost(jokeId).subscribe({
+      next: () => {
+        console.log('Joke approuved successfully');
+        this.toastr.success('Le post selectionné a été approuvé', 'Success');
+      },
+      error: (err) => {
+        console.error('Error, le post n\'a pas été approuvé : ', err);
+      },
+    });
+  }
+
 
 
   isArabic(text: string): boolean {
@@ -158,5 +179,22 @@ export class GagComponent implements OnInit {
     return false;
   }
 
+  openDeleteConfirmationDialog(jokeId: number): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container', // Optional: Add a custom class for styling
+      data: { jokeId: jokeId }, // Pass the jokeId to the dialog
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // User clicked "Delete"
+        this.deleteJoke(jokeId); // Call deleteJoke with the jokeId
+      } else {
+        // User clicked "Cancel" or closed the dialog
+        console.log('Deletion canceled');
+      }
+    });
+  }
 
 }

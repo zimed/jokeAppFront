@@ -39,18 +39,23 @@
                             </div>
                             <div class="section_hours">{{gag.creation_dateTime}}</div>                          
                         </div>
-                        <button *ngIf="isAbleToDelete()" class="delete-button" (click)="deleteJoke(gag.id)">
-                            X
-                        </button>
+                        <div class="postAction">
+                            <button *ngIf="isAbleToValidate() && gag.status!=='APPROVED'" class="approuve-button" (click)="approuveJoke(gag.id)">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            </button>
+                            <button *ngIf="isAbleToDelete(gag.createur_name)" class="delete-button" (click)="openDeleteConfirmationDialog(gag.id)">
+                                X
+                            </button>
+                        </div>
                     </div>
                     <div class="mainGagContainer">
                         <div id="title" *ngIf="gag.titreGag!==''">
-                            <a href="{{'/gags/' + gag.createur_name + '/' + gag.id}}">
-                                <h5>{{gag.titreGag}}</h5>
+                            <a>
+                                <h5>#{{gag.titreGag}}</h5>
                             </a>
                         </div>
                         <div id="title" *ngIf="gag.titreGag===''">
-                            <a href="{{'/gags/' + gag.createur_name + '/' + gag.id}}"><h5>NoTitle</h5></a>
+                            <a><h5>#NoTitle</h5></a>
                         </div>
                         <div class="section_content">
                             <!-- Gag Text -->

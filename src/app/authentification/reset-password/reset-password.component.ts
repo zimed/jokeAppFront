@@ -4,6 +4,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-reset-password',
@@ -22,7 +24,8 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -49,16 +52,15 @@ export class ResetPasswordComponent implements OnInit {
     // Call the reset password API
     this.authService.resetPassword(this.token, this.newPassword).subscribe({
       next: (response) => {
-        console.log('Réinitialisation du mot de passe réussie:', response.message);
-        this.successMessage = response.message; // Display the message from the JSON response
+        this.successMessage = response; // Display the message from the JSON response
+        this.toastr.success(response)
         this.errorMessage = '';
         setTimeout(() => {
           this.router.navigate(['/login']); // Redirect to login page
         }, 3000);
       },
       error: (error) => {
-        console.error('Échec de la réinitialisation du mot de passe:', error);
-        this.errorMessage = 'Échec de la réinitialisation du mot de passe. Veuillez réessayer.';
+        this.toastr.error('Échec de la réinitialisation du mot de passe. Veuillez réessayer. ', error);
         this.successMessage = '';
       },
     });

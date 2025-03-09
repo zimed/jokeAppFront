@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 export class AddGagComponentComponent implements OnInit {
   addTextGagForm!: FormGroup;
   errorCreation: string | null = null;
-  types = ['Devinette', 'Blague'];
-  categories = ['IRONIE', 'SARCASME', 'HUMOUR NOIR'];
+  types = ['Devinette', 'Blague', 'Story'];
+  categories = ['IRONIE', 'SARCASME', 'HUMOUR NOIR', 'HUMOUR ABSURDE', 'JEUX DE MOTS'];
   culture = localStorage.getItem('selectedCulture');
 
   constructor(private router: Router, private formBuilder: FormBuilder, private gagService: GagService, private toastr: ToastrService, private cultureService: CultureService) {}
@@ -22,10 +22,10 @@ export class AddGagComponentComponent implements OnInit {
   ngOnInit(): void {
     this.addTextGagForm = this.formBuilder.group({
       titre: ['', Validators.maxLength(80)],
-      gagContenu: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]],
+      gagContenu: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(1000)]],
       laChute: ['', Validators.maxLength(400)],
       type: ['', Validators.required],
-      selectedCategory: [null, Validators.required] // Single selected category
+      selectedCategory: [null] // Single selected category
     });
   }
 
@@ -46,15 +46,18 @@ export class AddGagComponentComponent implements OnInit {
 
   // Build the API payload from the form data
   private buildPayload(): any { 
-    const categorieMapping: { [key: string]: string } = {
+    const categorieMapping: { [key: string]: string | null } = {
       'IRONIE': 'IRONIE',
       'SARCASME': 'SARCASM',
-      'HUMOUR NOIR': 'DARK_HUMOR'
+      'HUMOUR NOIR': 'DARK_HUMOR',
+      'HUMOUR ABSURDE': 'ABSURDE_HUMOR',
+      'JEUX DE MOTS': 'WORD_PLAY'
     };
 
     const typeMapping: { [key: string]: string } = {
       'Devinette': 'DEVINETTE',
       'Blague': 'JOKE',
+      'Story': 'STORY'
     };
 
     this.cultureService.culture$.subscribe((culture) => {

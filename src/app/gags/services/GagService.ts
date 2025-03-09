@@ -61,7 +61,7 @@ export class GagService {
     );
   }
 
-  getFilteredGags(page: number,size: number,type?: string | null,category?: string | null,culture?: string | null): Observable<{ gags: Gag[], totalPages: number }> {
+  getFilteredGags(page: number,size: number,type?: string | null,category?: string | null,culture?: string | null, status?: string | null ): Observable<{ gags: Gag[], totalPages: number }> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -74,6 +74,9 @@ export class GagService {
     }
     if (culture) {
       params = params.set('culture', culture);
+    }
+    if (status) {
+      params = params.set('status', status);
     }
   
     // Make the HTTP request and transform the response
@@ -91,6 +94,7 @@ export class GagService {
           type: joke.type,
           category: joke.category,
           context: joke.context,
+          status: joke.status
         })),
         totalPages: response.totalPages,
       }))
@@ -106,6 +110,15 @@ export class GagService {
     });
 
     return this.http.post(`${this.apiUrl}/addJoke`, payload, { headers });
+  }
+
+  approuvePost(jokeId: number): Observable<any> {
+    const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/approve/` + jokeId, {}, { headers });
   }
 
 
