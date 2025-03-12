@@ -6,7 +6,8 @@
   border-right: 1px solid #ddd;
   height: 100vh;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
+  position: fixed; /* Fix the sidebar */
+  overflow-y: auto;
 }
 
 /* Filter Toggle Button */
@@ -61,14 +62,14 @@
 
 /* Filter Details */
 .filter-details {
-  overflow: hidden;
-  max-height: 0;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: calc(100vh - 300px); /* Adjust based on your layout */
   transition: max-height 0.3s ease-out;
 }
 
 .filter-details.open {
-  max-height: 500px;
-  overflow-y: auto;
+  max-height: calc(100vh - 300px); /* Keep the same height when open */
+  overflow-y: auto; /* Ensure scrolling is enabled */
 }
 
 /* Filter Group */

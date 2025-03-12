@@ -1,4 +1,4 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Gag } from '../../../shared/models/gags.interface';
 import { GagService } from '../../services/GagService';
 import { environment } from '../../../../environments/environment';
@@ -24,6 +24,7 @@ export class GagComponent implements OnInit {
   showLaChuteStates: { [key: number]: boolean } = {};
   currentPage: number = 0;
   totalPages: number = 0;
+  updatedFilters: any = {};
   currentCulture: string = 'MAR';
   connectedUser: string | null = null;
   roles: string[] = [];
@@ -50,10 +51,10 @@ export class GagComponent implements OnInit {
       this.userImageSrc = this.cultureService.getProfilImage();
   
       // Ajouter la culture aux filtres et recharger les blagues
-      const updatedFilters = { ...filters, culture: this.currentCulture };
+      this.updatedFilters = { ...filters, culture: this.currentCulture };
       this.currentPage = 0; // Reset de la pagination
       this.gags = []; // Nettoyer la liste actuelle
-      this.loadGags(updatedFilters);
+      this.loadGags(this.updatedFilters);
     });
     
     
@@ -117,10 +118,21 @@ export class GagComponent implements OnInit {
     });
   }
 
+
+
   loadMore() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.loadGags();  // Load more gags on button click
+      this.loadGags(this.updatedFilters);
+      setTimeout(() => {
+        const newJokeElement = document.getElementById(`g${this.gags.length - environment.gagPageSize -1}`);
+        console.log("Element exists in the DOM:", newJokeElement);
+        if (newJokeElement) {         
+          newJokeElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+        } else {
+          console.error("Element not found!");
+        }
+      }, 1000);
     }
   }
 

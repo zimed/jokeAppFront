@@ -54,9 +54,9 @@
                                 <h5>#{{gag.titreGag}}</h5>
                             </a>
                         </div>
-                        <div id="title" *ngIf="gag.titreGag===''">
+                        <!--div id="title" *ngIf="gag.titreGag===''">
                             <a><h5>#NoTitle</h5></a>
-                        </div>
+                        </div-->
                         <div class="section_content">
                             <!-- Gag Text -->
                             <p [ngClass]="{'text-right': isArabic(gag.titreGag)}" [innerHTML]="gag.gagText" class="gag"></p>
