@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Gag } from '../../../shared/models/gags.interface';
 import { GagService } from '../../services/GagService';
 import { environment } from '../../../../environments/environment';
@@ -15,7 +16,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./gags.component.css'],
 })
 export class GagComponent implements OnInit {
-
+  username: string | null = null; // To store the username from the route
+  isUserPostsView: boolean = false; // Flag to check if it's a user-specific posts view
   gags: Gag[] = [];
   loading: boolean = true;
   errorMsg: string | null = null;
@@ -31,40 +33,68 @@ export class GagComponent implements OnInit {
   public userImageSrc: string = 'assets/images/users/user_francais.png';
   private filtersSubscription: Subscription = new Subscription();
 
-  constructor(private gagService: GagService, private authService : AuthService, private filterService: FilterService, private cultureService: CultureService, private dialog: MatDialog, private toastr: ToastrService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private gagService: GagService,
+    private authService : AuthService, 
+    private filterService: FilterService, 
+    private cultureService: CultureService, 
+    private dialog: MatDialog, 
+    private toastr: ToastrService) 
+    {}
 
   ngOnInit() {
-
     this.roles = this.authService.getRoles();
     this.connectedUser = this.authService.getUserNameFromToken();
-
-
     this.loading = true;
-
-    this.filtersSubscription = combineLatest([
-      this.cultureService.culture$,
-      this.filterService.filters$
-    ]).subscribe(([culture, filters]) => {
-      this.currentCulture = culture;
-      console.log('Current culture:', this.currentCulture);
-      this.userImageSrc = this.cultureService.getProfilImage();
   
-      // Ajouter la culture aux filtres et recharger les blagues
-      this.updatedFilters = { ...filters, culture: this.currentCulture };
-      this.currentPage = 0; // Reset de la pagination
-      this.gags = []; // Nettoyer la liste actuelle
-      this.loadGags(this.updatedFilters);
+    // Check if the route has a username parameter
+    this.route.paramMap.subscribe(params => {
+      this.username = params.get('username');
+      if (this.username) {
+        this.isUserPostsView = true;
+        this.fetchUserPosts(this.username);
+      } else {
+        this.isUserPostsView = false;
+        this.filtersSubscription = combineLatest([
+          this.cultureService.culture$,
+          this.filterService.filters$
+        ]).subscribe(([culture, filters]) => {
+          this.currentCulture = culture;
+          this.userImageSrc = this.cultureService.getProfilImage();
+          this.updatedFilters = { ...filters, culture: this.currentCulture };
+          this.currentPage = 0;
+          this.gags = [];
+          this.loadGags(this.updatedFilters);
+        });
+      }
     });
-    
-    
   }
 
   ngOnDestroy() {
     if (this.filtersSubscription) {
       this.filtersSubscription.unsubscribe();
     }
+    this.gags = []; // Reset the gags array
   }
+
+
+  fetchUserPosts(username: string): void {
+    this.loading = true;
+    this.gagService.getUserPosts(username).subscribe({
+      next: (data) => {
+        this.gags = data; // Assign the fetched posts to the gags array
+        this.loading = false;
+        this.errorMsg = null;
+      },
+      error: (error) => {
+        this.errorMsg = 'Failed to load user posts. Please try again later.';
+        this.loading = false;
+      },
+    });
+  }
+
+
 
   toggleLaChute(gagId: number) {
     this.showLaChuteStates[gagId] = !this.showLaChuteStates[gagId];
@@ -102,24 +132,6 @@ export class GagComponent implements OnInit {
     return this.roles.includes('ROLE_ADMIN') 
   }
 
-  loadGags1() {
-    this.loading = true;
-    this.gagService.getPaginatedGags(this.currentPage, environment.gagPageSize).subscribe({
-      next: (data) => {
-        this.gags = this.gags.concat(data.gags);  // Append new gags to existing list
-        this.totalPages = data.totalPages;
-        this.loading = false;
-      },
-      error: (error) => {
-        this.errorMsg = 'Failed to load gags';
-        console.error(error);
-        this.loading = false;
-      },
-    });
-  }
-
-
-
   loadMore() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
@@ -136,23 +148,36 @@ export class GagComponent implements OnInit {
     }
   }
 
-  deleteJoke(jokeId: number): void {
-    this.gagService.deleteJoke(jokeId).subscribe({
-      next: () => {
-        console.log('Joke deleted successfully');
-        // Remove the deleted joke from the list
+  openDeleteConfirmationDialog(jokeId: number): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: { jokeId: jokeId }, // Pass the jokeId to the dialog
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
         this.gags = this.gags.filter((gag) => gag.id !== jokeId);
-      },
-      error: (err) => {
-        console.error('Error deleting joke:', err);
-      },
+        this.toastr.success('Joke deleted successfully', 'Success'); // Show success toast
+        // Handle UI updates (e.g., remove the joke from the list or navigate away)
+      }
+      else {
+        this.toastr.error('Failed to delete joke', result); // Show error toast
+      }
     });
   }
+
 
   approuveJoke(jokeId: number): void {
     this.gagService.approuvePost(jokeId).subscribe({
       next: () => {
         console.log('Joke approuved successfully');
+        this.gags = this.gags.map((gag) => {
+          if (gag.id === jokeId) {
+            gag.status = 'APPROVED';
+          }
+          return gag;
+        }); 
         this.toastr.success('Le post selectionné a été approuvé', 'Success');
       },
       error: (err) => {
@@ -191,22 +216,6 @@ export class GagComponent implements OnInit {
     return false;
   }
 
-  openDeleteConfirmationDialog(jokeId: number): void {
-    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
-      width: '400px',
-      panelClass: 'custom-dialog-container', // Optional: Add a custom class for styling
-      data: { jokeId: jokeId }, // Pass the jokeId to the dialog
-    });
-  
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        // User clicked "Delete"
-        this.deleteJoke(jokeId); // Call deleteJoke with the jokeId
-      } else {
-        // User clicked "Cancel" or closed the dialog
-        console.log('Deletion canceled');
-      }
-    });
-  }
+
 
 }

@@ -1,0 +1,273 @@
+/* Center the spinner */
+mat-progress-spinner {
+    margin: 20px auto;
+    display: block;
+  }
+  
+  /* Error message styling */
+  #errorMessage {
+    margin-top: 20%;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    color: #3e4144;
+  }
+  
+  /* Container for the single joke */
+  #conteneur {
+    position: relative;
+    width: 100%;
+    display: block;
+  }
+  
+  /* Single joke block */
+  #gagBloc {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5em;
+    margin-bottom: 1em;
+  }
+  
+  /* Joke post styling */
+  .gagPost {
+    border: 1px solid #ced4da;
+    position: relative;
+    width: 100%;
+    background-color: white;
+    border-radius: 30px;
+  }
+  
+  /* Header section of the joke */
+  .section__head {
+    position: relative; /* Changed from absolute to relative */
+    background-color: #c3c302 !important;
+    height: 80px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* User image */
+  .imageUser {
+    margin-right: 10px;
+  }
+  
+  .imageUser img {
+    border-radius: 50%;
+    display: block;
+    width: 60px;
+    height: 60px;
+  }
+  
+  /* User details */
+  .detail_header {
+    flex: 1;
+  }
+  
+  /* Username styling */
+  .section_username {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    text-align: left;
+  }
+  
+  .section_username a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Time of posting */
+  .section_hours {
+    color: white;
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  /* Post actions (delete, approve buttons) */
+  .postAction {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* Delete and approve buttons */
+  .delete-button,
+  .approuve-button {
+    background-color: #4b4f55;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-button:hover,
+  .approuve-button:hover {
+    background-color: #333;
+  }
+  
+  /* Main content container */
+  .mainGagContainer {
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  /* Title styling */
+  #title h5 {
+    font-size: 18px;
+    color: #4b4f55;
+    margin: 0;
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  /* Content section */
+  .section_content {
+    margin-top: 10px;
+    color: #494a4d;
+    text-align: left;
+  }
+  
+  /* Gag text */
+  .gag {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  
+  /* La Chute (punchline) button */
+  #laChute {
+    display: block;
+    margin: 10px auto;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 8px 16px;
+    background: #cccc00;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #laChute:hover {
+    background: #b3b300;
+  }
+  
+  /* La Chute content */
+  .laChuteContainer {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* update post css elements */
+.edit-button {
+  background-color: #4b4f55;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #333;
+}
+
+/* Form styling */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn {
+  margin-right: 10px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hashtag-button button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hashtag-button button.selected {
+  background-color: #666;
+  color: white;
+  border-color: #4B4F55;
+}
+  
+  /* Media queries for mobile responsiveness */
+  @media only screen and (max-width: 600px) {
+    .section__head {
+      height: 60px;
+      padding: 8px;
+    }
+  
+    .imageUser img {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .section_username {
+      font-size: 16px;
+    }
+  
+    .section_hours {
+      font-size: 12px;
+    }
+  
+    .mainGagContainer {
+      padding: 10px;
+    }
+  
+    #title h5 {
+      font-size: 16px;
+    }
+  
+    .gag {
+      font-size: 14px;
+    }
+  
+    #laChute {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  
+    .laChuteContainer {
+      font-size: 14px;
+    }
+  }

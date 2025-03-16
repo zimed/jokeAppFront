@@ -79,7 +79,7 @@ export class AddGagComponentComponent implements OnInit {
   private sendJokeToBackend(payload: any): void {
     this.gagService.addGag(payload).subscribe({
       next: (response) => {
-        this.router.navigate(['/jokes']);
+        this.router.navigate(['/posts']);
         this.toastr.success('Votre post est en attente d\'acceptation !', 'Success');
       },
       error: (error) => {

@@ -37,7 +37,7 @@ export class SidebarComponent {
 
   navigateToAddGag(): void {
     this.sharedUIObjectService.updateShowSecondaryMenu(false);
-    this.router.navigate(['/jokes/add']); // Navigate to the specified route
+    this.router.navigate(['/posts/add']); // Navigate to the specified route
   }
 
 
@@ -66,7 +66,7 @@ export class SidebarComponent {
 
   // Apply filters
   applyFilters(): void {
-    this.router.navigate(['/jokes']);
+    this.router.navigate(['/posts']);
 
     const categorieMapping: { [key: string]: string | null } = {
       'ALL': null,

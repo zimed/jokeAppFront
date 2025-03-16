@@ -50,7 +50,7 @@ export class NavigationComponent implements AfterViewInit, OnInit {
   }
 
   displayJokes(): void {  
-    this.router.navigate(['/jokes']);
+    this.router.navigate(['/posts']);
   }
 
   changeCulture(): void { 

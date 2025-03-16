@@ -53,7 +53,7 @@ export class AuthentificationComponent {
       this.authService.login(this.username, this.password).subscribe({
         next: (response) => {
           console.log('Connexion réussie:', response);
-          this.router.navigate(['/jokes']); // Redirect to the jokes page
+          this.router.navigate(['/posts']); // Redirect to the jokes page
         },
         error: (error) => {
           console.error('Échec de la connexion:', error);

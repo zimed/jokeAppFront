@@ -112,6 +112,62 @@ export class GagService {
     return this.http.post(`${this.apiUrl}/addJoke`, payload, { headers });
   }
 
+  getUserPosts(username: string): Observable<Gag[]> {
+    const token = localStorage.getItem('authToken'); // Assuming you store the token in localStorage
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Make the GET request to fetch all posts for the user
+    return this.http.get<GagResponse[]>(`${this.apiUrl}/user/${username}`, { headers }).pipe(
+      map((responseArray) =>
+        responseArray.map((response) => ({
+          id: response.id,
+          titreGag: response.title,
+          gagText: response.textBody,
+          laChute: response.punchline || '',
+          createur_name: response.user?.username || 'Unknown',
+          creation_dateTime: timeAgo(response.creationTime),
+          likes: response.likes,
+          dislikes: response.dislikes,
+          type: response.type,
+          category: response.category,
+          context: response.context,
+          status: response.status
+        }))
+      )
+    );
+  }
+
+
+  getGag(jokeId: string): Observable<Gag> {
+    const token = localStorage.getItem('authToken'); // Assuming you store the token in localStorage
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    // Make the GET request to fetch a single joke
+    return this.http.get<GagResponse>(`${this.apiUrl}/gags/${jokeId}`, { headers }).pipe(
+      map((response) => ({
+        id: response.id,
+        titreGag: response.title,
+        gagText: response.textBody,
+        laChute: response.punchline || '',
+        createur_name: response.user?.username || 'Unknown',
+        creation_dateTime: timeAgo(response.creationTime),
+        likes: response.likes,
+        dislikes: response.dislikes,
+        type: response.type,
+        category: response.category,
+        context: response.context,
+        status: response.status
+      }))
+    );
+  }
+
+
   approuvePost(jokeId: number): Observable<any> {
     const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
     const headers = new HttpHeaders({
@@ -119,6 +175,16 @@ export class GagService {
       'Content-Type': 'application/json'
     });
     return this.http.post(`${this.apiUrl}/approve/` + jokeId, {}, { headers });
+  }
+
+  updateJoke(jokeId: number, updatedJoke: any): Observable<Gag> {
+    const token = localStorage.getItem('authToken'); // Get the token from localStorage
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  
+    return this.http.put<Gag>(`${this.apiUrl}/updateJoke/${jokeId}`, updatedJoke, { headers });
   }
 
 

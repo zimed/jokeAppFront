@@ -1,0 +1,161 @@
+<div *ngIf="loading">
+  <mat-progress-spinner
+    mode="indeterminate"
+    diameter="50"
+    strokeWidth="5"
+  ></mat-progress-spinner>
+</div>
+
+<div *ngIf="errorMsg !== null">
+  <div class="col-sm-6 offset-sm-3" id="errorMessage">
+    <span>{{ errorMsg }}</span>
+  </div>
+</div>
+
+<div *ngIf="loading === false && errorMsg === null && gag">
+  <div id="conteneur">
+    <div id="gagBloc">
+      <div class="gagPost" id="g0">
+        <!-- Header Section -->
+        <div class="section__head">
+          <a href="single_post.html" class="imageUser">
+            <div>
+              <img [src]="userImageSrc" alt="" class="rounded-circle" width="60" />
+            </div>
+          </a>
+          <div class="detail_header">
+            <div class="section_username">
+              <a href="#" *ngIf="!gag.createur_name">
+                @Anonyme
+              </a>
+              <a href="#" *ngIf="gag.createur_name">
+                @{{ gag.createur_name }}
+              </a>
+            </div>
+            <div class="section_hours">{{ gag.creation_dateTime }}</div>
+          </div>
+          <!-- Post Actions (Delete, Approve, Edit) -->
+          <div class="postAction">
+            <button *ngIf="isAbleToDelete(gag.createur_name)" class="delete-button" (click)="openDeleteConfirmationDialog(gag.id)">
+              X
+            </button>
+            <button *ngIf="isAbleToValidate() && gag.status !== 'APPROVED'" class="approuve-button" (click)="approuveJoke(gag.id)">
+              <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </button>
+            <button *ngIf="isAbleToUpdate(gag.createur_name)" class="edit-button" (click)="toggleEditMode()">
+              <i class="fa fa-edit" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="mainGagContainer">
+          <div *ngIf="!isEditMode">
+            <div id="title" *ngIf="gag.titreGag">
+              <a>
+                <h5>#{{ gag.titreGag }}</h5>
+              </a>
+            </div>
+            <div class="section_content">
+              <p [ngClass]="{'text-right': isArabic(gag.titreGag)}" [innerHTML]="gag.gagText" class="gag"></p>
+              <div *ngIf="gag.laChute">
+                <button
+                  id="laChute"
+                  class="btn btn-default"
+                  (click)="toggleLaChute()"
+                >
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-angle-double-down': !showLaChute,
+                      'fa-angle-double-up': showLaChute
+                    }"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+                <div *ngIf="showLaChute">
+                  <div
+                    [ngClass]="{'text-right': isArabic(gag.titreGag)}"
+                    [innerHTML]="gag.laChute"
+                    class="laChuteContainer"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit Form -->
+          <form *ngIf="isEditMode" [formGroup]="editGagForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label>Entrez le titre de votre post (facultatif)</label>
+              <input type="text" class="form-control" formControlName="titre" autocomplete="off">
+            </div>
+            <div *ngIf="editGagForm.controls['titre'].invalid && (editGagForm.controls['titre'].dirty || editGagForm.controls['titre'].touched)" class="alert alert-danger">
+              <div *ngIf="editGagForm.controls['titre'].errors?.['maxlength']">
+                Longueur du titre dépassée (80 caractères)
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Post (*)</label>
+              <textarea class="form-control" formControlName="gagContenu" rows="6" autocomplete="off"></textarea>
+            </div>
+            <div *ngIf="editGagForm.controls['gagContenu'].invalid && (editGagForm.controls['gagContenu'].dirty || editGagForm.controls['gagContenu'].touched)" class="alert alert-danger">
+              <div *ngIf="editGagForm.controls['gagContenu'].errors?.['minlength']">
+                Longueur minimale: 5 caractères
+              </div>
+              <div *ngIf="editGagForm.controls['gagContenu'].errors?.['maxlength']">
+                Longueur maximale: 1000 caractères
+              </div>
+              <div *ngIf="editGagForm.controls['gagContenu'].errors?.['required']">
+                Champ obligatoire
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>La chute (facultatif)</label>
+              <textarea class="form-control" formControlName="laChute" rows="2" autocomplete="off"></textarea>
+            </div>
+            <div *ngIf="editGagForm.controls['laChute'].invalid && (editGagForm.controls['laChute'].dirty || editGagForm.controls['laChute'].touched)" class="alert alert-danger">
+              <div *ngIf="editGagForm.controls['laChute'].errors?.['maxlength']">
+                Longueur maximale: 400 caractères
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="categorie">Sélectionnez le type (*)</label>
+              <select id="categorie" class="form-control" formControlName="type">
+                <option value="" disabled>Sélectionnez un type</option>
+                <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+              </select>
+            </div>
+            <div *ngIf="editGagForm.controls['type'].invalid && (editGagForm.controls['type'].dirty || editGagForm.controls['type'].touched)" class="alert alert-danger">
+              <div *ngIf="editGagForm.controls['type'].errors?.['required']">
+                Le type est obligatoire
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sélectionnez la catégorie de blague (facultatif)</label>
+              <div class="button-group">
+                <div *ngFor="let category of categories" class="hashtag-button">
+                  <button type="button"
+                          [class.selected]="editGagForm.value.selectedCategory === category"
+                          (click)="selectCategory(category)">
+                    {{ category }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="btn btn-success" type="submit" [disabled]="editGagForm.invalid">
+              <i class="fa fa-save" aria-hidden="true"></i> Enregistrer
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">Annuler</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
